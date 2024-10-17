@@ -335,14 +335,14 @@ export default function MapContainerFactory(
       primary: true
     };
 
+    constructor(props) {
+      super(props);
+    }
+
     state = {
       // Determines whether attribution should be visible based the result of loading the map style
       showMapboxAttribution: true
     };
-
-    constructor(props) {
-      super(props);
-    }
 
     componentDidMount() {
       if (!this._ref.current) {
@@ -469,6 +469,10 @@ export default function MapContainerFactory(
       this.props.visStateActions.layerConfigChange(this.props.visState.layers[idx], {
         colorDomain
       } as Partial<LayerBaseConfig>);
+    };
+
+    _onLayerFilteredItemsChange = (idx, event) => {
+      this.props.visStateActions.layerFilteredItemsChange(this.props.visState.layers[idx], event);
     };
 
     _handleMapToggleLayer = layerId => {
@@ -754,7 +758,8 @@ export default function MapContainerFactory(
         },
         {
           onLayerHover: this._onLayerHover,
-          onSetLayerDomain: this._onLayerSetDomain
+          onSetLayerDomain: this._onLayerSetDomain,
+          onFilteredItemsChange: this._onLayerFilteredItemsChange
         },
         deckGlProps
       );
